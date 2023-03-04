@@ -10,14 +10,51 @@ provider:
       Action: 
         - dynamodb:*
       Resource: 
-        - arn:aws:dynamodb:us-east-2:321868722454:table/TaskTable
+        - ${env:DYNAMO_ARN}
+        # - arn:aws:dynamodb:us-east-2:321868722454:table/TaskTable
 
 functions:
-  api:
-    handler: index.handler
+  index:
+    handler: src/index.handler
     events:
       - httpApi:
           path: /
+          method: get
+  createTask:
+    handler: src/addTask.addTask
+    events:
+      - httpApi:
+          path: /tasks
+          method: post
+  getTasks:
+    handler: src/getTasks.getTasks
+    events:
+      - httpApi:
+          path: /tasks
+          method: get
+  getTask:
+    handler: src/getTasks.getTask
+    events:
+      - httpApi:
+          path: /tasks/{id}
+          method: get
+  updateTask:
+    handler: src/updateTask.updateTask
+    events:
+      - httpApi:
+          path: /tasks/{id}
+          method: put
+  deleteTask:
+    handler: src/deleteTask.deleteTask
+    events:
+      - httpApi:
+          path: /tasks/{id}
+          method: delete
+  sendMessage:
+    handler: src/updateTask.sendMessage
+    events:
+      - httpApi:
+          path: /message
           method: get
 
 resources:
@@ -33,3 +70,4 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+

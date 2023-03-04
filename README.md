@@ -26,6 +26,12 @@ $ serverless deploy
 
 After deploying, you should see output similar to:
 
+For deploy setting an env variable with ARN of the Dynamo DB.
+
+```
+$  DYNAMO_ARN=arn:aws:dynamodb:us-east-2:321868722454:table/TaskTable serverless deploy --verbose
+```
+
 ```bash
 Deploying aws-node-http-api-project to stage dev (us-east-1)
 

@@ -4,29 +4,30 @@ const AWS = require('aws-sdk')
 
 const REGION = 'us-east-2'
 let myVar = process.env.JOSEDEV_VAR
+let topicSnsArn = process.env.TOPIC_SNS_ARN
 const params = {
     Message: `Thank you for visiting the page message, and my var is ${myVar}`,
-    TopicArn: 'arn:aws:sns:us-east-2:321868722454:test-topic'
+    TopicArn: topicSnsArn
 }
 
 const snsClient = new SNSClient({region: REGION})
 
-const sendMessage = async(event) => {
-    try {
-        const data = await snsClient.send(new PublishCommand(params))
-        console.log(data);
-        return {
-            status: 200,
-            // body: JSON.stringify(data),
-            body: data,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
+// const sendMessage = async(event) => {
+//     try {
+//         const data = await snsClient.send(new PublishCommand(params))
+//         console.log(data);
+//         return {
+//             status: 200,
+//             // body: JSON.stringify(data),
+//             body: data,
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 const updateTask = async(event) => {
     try {
@@ -62,5 +63,5 @@ const updateTask = async(event) => {
 
 module.exports = {
     updateTask,
-    sendMessage
+    // sendMessage
 }

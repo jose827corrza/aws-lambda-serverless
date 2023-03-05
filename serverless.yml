@@ -51,7 +51,7 @@ functions:
           path: /tasks/{id}
           method: delete
   sendMessage:
-    handler: src/updateTask.sendMessage
+    handler: src/handlePhoneNumber.sendMessage
     events:
       - httpApi:
           path: /message

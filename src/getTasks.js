@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk')
+const middy = require('@middy/core')
+const httpErrorHandler = require('@middy/http-error-handler')
 
 const getTasks = async(event) => {
     try {
@@ -49,6 +51,9 @@ const getTask = async(event) => {
                 status: 404,
                 headers:{
                     'Content-Type': 'application/json',
+                },
+                body: {
+                    message: `The task with ID: ${id}. does not exist`
                 }
             }
         }
@@ -59,6 +64,6 @@ const getTask = async(event) => {
 }
 
 module.exports = {
-    getTasks,
-    getTask
+    getTasks: middy(getTasks).use(httpErrorHandler),
+    getTask: middy(getTask).use(httpErrorHandler)
 }

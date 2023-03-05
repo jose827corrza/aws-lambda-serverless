@@ -4,14 +4,34 @@ const deleteTask = async(event) => {
     try {
         const dynamodb = new AWS.DynamoDB.DocumentClient()
         const {id} = event.pathParameter
-        await dynamodb.delete({
-            TableName: "TaskTable",
+
+        // Check if exist the task
+        const result = await dynamodb.get({
+            TableName: 'TaskTable',
             Key: {id}
         }).promise()
-        return {
-            status: 200,
-            body : {
-                message: `Task with ID ${id} deleted`
+        const task = result.Item
+
+        if(task){
+            await dynamodb.delete({
+                TableName: "TaskTable",
+                Key: {id}
+            }).promise()
+            return {
+                status: 200,
+                body : {
+                    message: `Task with ID ${id} deleted`
+                }
+            }
+        } else {
+            return {
+                status: 404,
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: {
+                    message: `The task with ID: ${id}. does not exist`
+                }
             }
         }
     } catch (error) {
